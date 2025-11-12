@@ -1,73 +1,917 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beau-Arts-Gallery</title>
-    <link rel="stylesheet" href="assets/style/css/main.min.css">
-    <link rel="shortcut icon" href="assets/svg/logo.svg" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/style/css/main.min.css" />
+    <link rel="shortcut icon" href="assets/svg/logo.svg" type="image/x-icon" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
     <style>
-        #home {
-            background-image: url("assets/images/museum_art.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
+      .gallery-hero {
+        background: linear-gradient(
+            rgba(59, 31, 0, 0.85),
+            rgba(59, 31, 0, 0.85)
+          ),
+          url("assets/images/museum_art.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .artwork-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        height: 100%;
+      }
+
+      .artwork-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      .artwork-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 0.375rem 0.375rem 0 0;
+      }
+
+      .artwork-card .card-img-top {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .artwork-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .artwork-card:hover .artwork-overlay {
+        opacity: 1;
+      }
+
+      .artwork-overlay i {
+        color: white;
+        font-size: 2rem;
+      }
+
+      .filter-btn.active {
+        background-color: #ffc107;
+        color: #000;
+        border-color: #ffc107;
+      }
+
+      .gallery-controls {
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+      }
+
+      .modal-artwork-image {
+        max-width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+        border-radius: 0.5rem;
+      }
+
+      .artwork-status {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .status-available {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .status-sold {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .status-reserved {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      @media (max-width: 768px) {
+        .artwork-image {
+          height: 250px;
         }
+      }
     </style>
-</head>
+  </head>
 
-<body class="min-vh-100">
-    <!--  navigation bar -->
+  <body class="min-vh-100">
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg bg-primary position-relative z-3">
-        <div class="container py-4">
-            <a class="navbar-brand" href="index.html">
-                <img src="assets/svg/logo.svg" alt="logo" class="img-fluid me-4" width="40" rcset="">
-            </a>
-            <button class="navbar-toggler bg-warning  rounded-5 border-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon "></span>
+      <div class="container py-4">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="assets/svg/logo.svg"
+            alt="logo"
+            class="img-fluid me-4"
+            width="40"
+            rcset=""
+          />
+        </a>
+        <button
+          class="navbar-toggler bg-warning rounded-5 border-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link text-light"
+                aria-current="page"
+                href="index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active text-light" href="gallery.html"
+                >Gallery</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle text-light"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                more
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="sponsorship.html"
+                    >Sponsorship</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="about_us.html">About US</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                  <a class="dropdown-item" href="contact_us.html">Contact US</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2 rounded-5"
+              type="search"
+              placeholder=" Find art..."
+              aria-label="Search"
+            />
+            <button
+              class="btn btn-outline-warning rounded-5 px-4 py-2"
+              type="submit"
+            >
+              Search
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active text-light" aria-current="page" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  text-light" href="gallery.html">Gallery</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            more
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="sponsorship.html">Sponsorship</a></li>
-                            <li><a class="dropdown-item" href="about_us.html">About US</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="contact_us.html">Contact US</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2 rounded-5" type="search" placeholder=" Find art..."
-                        aria-label="Search" />
-                    <button class="btn btn-outline-warning rounded-5 px-4 py-2" type="submit">Search</button>
-                </form>
-            </div>
+          </form>
         </div>
+      </div>
     </nav>
-</body>
 
+    <!-- Gallery Hero Section -->
+    <section class="gallery-hero py-5 text-light">
+      <div class="container">
+        <div class="row justify-content-center text-center py-5">
+          <div class="col-lg-8">
+            <h1 class="display-3 fw-bold mb-4 text-warning">Our Gallery</h1>
+            <p class="lead fs-4 mb-0">
+              Explore our curated collection of exquisite artworks from talented
+              artists around the world
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Controls Section -->
+    <section class="py-4 bg-light">
+      <div class="container">
+        <div class="gallery-controls">
+          <div class="row g-3 align-items-end">
+            <!-- Search Bar -->
+            <div class="col-md-6 col-lg-4">
+              <label for="gallery-search" class="form-label fw-semibold mb-2"
+                >Search Artworks</label
+              >
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="gallery-search"
+                  placeholder="Search by title, artist, or keyword..."
+                  aria-label="Search artworks"
+                />
+              </div>
+            </div>
+
+            <!-- Filter by Category -->
+            <div class="col-md-6 col-lg-3">
+              <label for="filter-category" class="form-label fw-semibold mb-2"
+                >Category</label
+              >
+              <select class="form-select" id="filter-category">
+                <option value="all">All Categories</option>
+                <option value="painting">Painting</option>
+                <option value="sculpture">Sculpture</option>
+                <option value="photography">Photography</option>
+                <option value="digital">Digital Art</option>
+                <option value="mixed-media">Mixed Media</option>
+                <option value="drawing">Drawing</option>
+              </select>
+            </div>
+
+            <!-- Filter by Medium -->
+            <div class="col-md-6 col-lg-3">
+              <label for="filter-medium" class="form-label fw-semibold mb-2"
+                >Medium</label
+              >
+              <select class="form-select" id="filter-medium">
+                <option value="all">All Mediums</option>
+                <option value="oil">Oil</option>
+                <option value="acrylic">Acrylic</option>
+                <option value="watercolor">Watercolor</option>
+                <option value="charcoal">Charcoal</option>
+                <option value="bronze">Bronze</option>
+                <option value="marble">Marble</option>
+              </select>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="col-md-6 col-lg-2">
+              <label for="sort-options" class="form-label fw-semibold mb-2"
+                >Sort By</label
+              >
+              <select class="form-select" id="sort-options">
+                <option value="date-newest">Date (Newest)</option>
+                <option value="date-oldest">Date (Oldest)</option>
+                <option value="price-low">Price (Low to High)</option>
+                <option value="price-high">Price (High to Low)</option>
+                <option value="artist-az">Artist (A-Z)</option>
+                <option value="popularity">Popularity</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Filter Buttons -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <label class="form-label fw-semibold mb-2">Quick Filters</label>
+              <div class="d-flex flex-wrap gap-2">
+                <button
+                  class="btn btn-outline-primary filter-btn active"
+                  data-filter="all"
+                >
+                  All
+                </button>
+                <button
+                  class="btn btn-outline-primary filter-btn"
+                  data-filter="available"
+                >
+                  Available
+                </button>
+                <button
+                  class="btn btn-outline-primary filter-btn"
+                  data-filter="sold"
+                >
+                  Sold
+                </button>
+                <button
+                  class="btn btn-outline-primary filter-btn"
+                  data-filter="reserved"
+                >
+                  Reserved
+                </button>
+                <button
+                  class="btn btn-outline-primary filter-btn"
+                  data-filter="featured"
+                >
+                  Featured
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Grid Section -->
+    <section class="py-5">
+      <div class="container">
+        <!-- Results Count -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <p class="text-muted mb-0">
+              Showing <span id="results-count">24</span> artworks
+            </p>
+          </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="row g-4" id="gallery-grid">
+          <!-- Artwork Card 1 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="painting"
+            data-medium="oil"
+            data-status="available"
+            data-artist="Vanessa Chen"
+            data-price="2500"
+            data-date="2024-01-15"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="assets\images\image1.jpeg"
+                  alt="Abstract Harmony"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Abstract Harmony</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Vanessa Chen
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Oil on Canvas
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$2,500</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 2 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="sculpture"
+            data-medium="bronze"
+            data-status="available"
+            data-artist="Marcus Rodriguez"
+            data-price="8500"
+            data-date="2023-11-20"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400&h=400&fit=crop"
+                  alt="Eternal Form"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Eternal Form</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Marcus Rodriguez
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Bronze Sculpture
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$8,500</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 3 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="photography"
+            data-medium="digital"
+            data-status="sold"
+            data-artist="Sarah Johnson"
+            data-price="1200"
+            data-date="2024-02-10"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
+                  alt="Urban Dreams"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Urban Dreams</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Sarah Johnson
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Digital Photography
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-muted text-decoration-line-through"
+                    >$1,200</span
+                  >
+                  <span class="artwork-status status-sold">Sold</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 4 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="painting"
+            data-medium="acrylic"
+            data-status="available"
+            data-artist="David Kim"
+            data-price="3200"
+            data-date="2024-01-05"
+            data-featured="true"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=400&fit=crop"
+                  alt="Color Symphony"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Color Symphony</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> David Kim
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Acrylic on Canvas
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$3,200</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 5 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="drawing"
+            data-medium="charcoal"
+            data-status="reserved"
+            data-artist="Emma Thompson"
+            data-price="950"
+            data-date="2023-12-18"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=400&fit=crop"
+                  alt="Silent Contemplation"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Silent Contemplation</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Emma Thompson
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Charcoal on Paper
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$950</span>
+                  <span class="artwork-status status-reserved">Reserved</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 6 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="mixed-media"
+            data-medium="mixed"
+            data-status="available"
+            data-artist="James Wilson"
+            data-price="4500"
+            data-date="2023-10-30"
+            data-featured="true"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=400&h=400&fit=crop"
+                  alt="Fusion Elements"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Fusion Elements</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> James Wilson
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Mixed Media
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$4,500</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 7 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="painting"
+            data-medium="watercolor"
+            data-status="available"
+            data-artist="Lisa Anderson"
+            data-price="1800"
+            data-date="2024-02-25"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&h=400&fit=crop"
+                  alt="Serene Waters"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Serene Waters</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Lisa Anderson
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Watercolor
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$1,800</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 8 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="sculpture"
+            data-medium="marble"
+            data-status="available"
+            data-artist="Robert Martinez"
+            data-price="12000"
+            data-date="2023-09-15"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=400&fit=crop"
+                  alt="Marble Elegance"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Marble Elegance</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Robert Martinez
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Marble Sculpture
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$12,000</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 9 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="digital"
+            data-medium="digital"
+            data-status="available"
+            data-artist="Alex Chen"
+            data-price="2200"
+            data-date="2024-03-01"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop"
+                  alt="Digital Horizon"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Digital Horizon</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Alex Chen
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Digital Art
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$2,200</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 10 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="painting"
+            data-medium="oil"
+            data-status="sold"
+            data-artist="Maria Garcia"
+            data-price="5500"
+            data-date="2023-08-22"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1578926311828-3a4c2c5e5b5e?w=400&h=400&fit=crop"
+                  alt="Vibrant Life"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Vibrant Life</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Maria Garcia
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Oil on Canvas
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-muted text-decoration-line-through"
+                    >$5,500</span
+                  >
+                  <span class="artwork-status status-sold">Sold</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 11 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="photography"
+            data-medium="digital"
+            data-status="available"
+            data-artist="Tom Brown"
+            data-price="1500"
+            data-date="2024-01-28"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=400&fit=crop"
+                  alt="Nature's Whisper"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Nature's Whisper</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Tom Brown
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Digital Photography
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$1,500</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artwork Card 12 -->
+          <div
+            class="col-sm-6 col-md-4 col-lg-3 artwork-item"
+            data-category="drawing"
+            data-medium="charcoal"
+            data-status="available"
+            data-artist="Sophie Lee"
+            data-price="1100"
+            data-date="2023-11-12"
+            data-featured="true"
+          >
+            <div class="card artwork-card border-0 shadow-sm h-100">
+              <div class="card-img-top position-relative">
+                <img
+                  src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=400&fit=crop"
+                  alt="Emotional Depth"
+                  class="artwork-image"
+                />
+                <div class="artwork-overlay">
+                  <i class="bi bi-zoom-in"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-2">Emotional Depth</h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person"></i> Sophie Lee
+                </p>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-palette"></i> Charcoal on Paper
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-primary">$1,100</span>
+                  <span class="artwork-status status-available">Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="row mt-5">
+          <div class="col-12 text-center">
+            <button
+              class="btn btn-warning btn-lg px-5"
+              id="load-more-btn"
+              type="button"
+            >
+              Load More Artworks
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Artwork Modal/Lightbox -->
+    <div
+      class="modal fade"
+      id="artworkModal"
+      tabindex="-1"
+      aria-labelledby="artworkModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title" id="artworkModalLabel">Artwork Details</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <img
+                  id="modal-artwork-image"
+                  src=""
+                  alt="Artwork"
+                  class="modal-artwork-image w-100"
+                />
+              </div>
+              <div class="col-md-6">
+                <h3 id="modal-artwork-title" class="mb-3"></h3>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-person"></i>
+                  <strong>Artist:</strong>
+                  <span id="modal-artwork-artist"></span>
+                </p>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-palette"></i>
+                  <strong>Medium:</strong>
+                  <span id="modal-artwork-medium"></span>
+                </p>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-tag"></i>
+                  <strong>Category:</strong>
+                  <span id="modal-artwork-category"></span>
+                </p>
+                <p class="text-muted mb-3">
+                  <i class="bi bi-calendar"></i>
+                  <strong>Date:</strong> <span id="modal-artwork-date"></span>
+                </p>
+                <div class="mb-3">
+                  <span id="modal-artwork-status"></span>
+                </div>
+                <div class="mb-4">
+                  <h4 class="text-primary" id="modal-artwork-price"></h4>
+                </div>
+                <p id="modal-artwork-description" class="text-muted">
+                  This exquisite piece showcases the artist's mastery of
+                  technique and emotional expression. Each brushstroke tells a
+                  story, creating a captivating visual narrative that draws
+                  viewers into its world.
+                </p>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-warning btn-lg" type="button">
+                    <i class="bi bi-envelope"></i> Inquire About This Piece
+                  </button>
+                  <button class="btn btn-outline-primary" type="button">
+                    <i class="bi bi-share"></i> Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-light py-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <p class="mb-0">
+              &copy; 2025 Beautiful Arts Gallery. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
